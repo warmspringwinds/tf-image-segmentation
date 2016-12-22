@@ -117,10 +117,10 @@ def read_tfrecord_and_decode_into_image_annotation_pair_tensors(tfrecord_filenam
     """Return image/annotation tensors that are created by reading tfrecord file.
     The function accepts tfrecord filenames queue as an input which is usually
     can be created using tf.train.string_input_producer() where filename
-    is specified and desired number of epochs. This function takes queue
-    produced by aforemention tf.train.string_input_producer() and outputs
-    converts raw binary representations into reshaped image/annotation
-    tensors.
+    is specified with desired number of epochs. This function takes queue
+    produced by aforemention tf.train.string_input_producer() and defines
+    tensors converted from raw binary representations into
+    reshaped image/annotation tensors.
     Parameters
     ----------
     tfrecord_filenames_queue : tfrecord filename queue
