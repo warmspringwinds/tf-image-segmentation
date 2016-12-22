@@ -8,7 +8,7 @@ slim = tf.contrib.slim
 from nets import vgg
 from preprocessing import vgg_preprocessing
 
-def FCN_32s(image_tensor, number_of_classes):
+def FCN_32s(image_tensor, number_of_classes, is_training):
     
     upsample_factor = 32
     
@@ -36,7 +36,7 @@ def FCN_32s(image_tensor, number_of_classes):
 
         logits, end_points = vgg.vgg_16(processed_images,
                                num_classes=number_of_classes,
-                               is_training=is_training_placeholder,
+                               is_training=is_training,
                                spatial_squeeze=False,
                                fc_conv_padding='SAME')
 
