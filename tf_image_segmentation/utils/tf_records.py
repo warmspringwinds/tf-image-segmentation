@@ -111,3 +111,51 @@ def read_image_annotation_pairs_from_tfrecord(tfrecords_filename):
         image_annotation_pairs.append((img, annotation))
     
     return image_annotation_pairs
+
+
+def read_tfrecord_and_decode_into_image_annotation_pair_tensors(tfrecord_filenames_queue):
+    """Return image/annotation tensors that are created by reading tfrecord file.
+    The function accepts tfrecord filenames queue as an input which is usually
+    can be created using tf.train.string_input_producer() where filename
+    is specified and desired number of epochs. This function takes queue
+    produced by aforemention tf.train.string_input_producer() and outputs
+    converts raw binary representations into reshaped image/annotation
+    tensors.
+    Parameters
+    ----------
+    tfrecord_filenames_queue : tfrecord filename queue
+        String queue object from tf.train.string_input_producer()
+    
+    Returns
+    -------
+    image, annotation : tuple of tf.int32 (image, annotation)
+        Tuple of image/annotation tensors
+    """
+    
+    reader = tf.TFRecordReader()
+
+    _, serialized_example = reader.read(tfrecord_filenames_queue)
+
+    features = tf.parse_single_example(
+      serialized_example,
+      features={
+        'height': tf.FixedLenFeature([], tf.int64),
+        'width': tf.FixedLenFeature([], tf.int64),
+        'image_raw': tf.FixedLenFeature([], tf.string),
+        'mask_raw': tf.FixedLenFeature([], tf.string)
+        })
+
+    
+    image = tf.decode_raw(features['image_raw'], tf.uint8)
+    annotation = tf.decode_raw(features['mask_raw'], tf.uint8)
+    
+    height = tf.cast(features['height'], tf.int32)
+    width = tf.cast(features['width'], tf.int32)
+    
+    image_shape = tf.pack([height, width, 3])
+    annotation_shape = tf.pack([height, width, 1])
+    
+    image = tf.reshape(image, image_shape)
+    annotation = tf.reshape(annotation, annotation_shape)
+    
+    return image, annotation
