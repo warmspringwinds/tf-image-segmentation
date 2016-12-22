@@ -35,7 +35,7 @@ def FCN_32s(image_tensor, number_of_classes):
     with slim.arg_scope(vgg.vgg_arg_scope()):
 
         logits, end_points = vgg.vgg_16(processed_images,
-                               num_classes=2,
+                               num_classes=number_of_classes,
                                is_training=is_training_placeholder,
                                spatial_squeeze=False,
                                fc_conv_padding='SAME')
