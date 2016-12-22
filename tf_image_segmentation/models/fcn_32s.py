@@ -2,11 +2,17 @@ import sys
 import tensorflow as tf
 from ..utils.upsampling import bilinear_upsample_weights
 
+
 # Using custom slim repository
 sys.path.append("/home/dpakhom1/workspace/my_models/slim/")
 slim = tf.contrib.slim
 from nets import vgg
 from preprocessing import vgg_preprocessing
+
+# Load the mean pixel values and the function
+# that performs the subtraction from each pixel
+from preprocessing.vgg_preprocessing import (_mean_image_subtraction,
+                                            _R_MEAN, _G_MEAN, _B_MEAN)
 
 def FCN_32s(image_tensor, number_of_classes, is_training):
     
