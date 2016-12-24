@@ -14,51 +14,84 @@ from preprocessing import vgg_preprocessing
 from preprocessing.vgg_preprocessing import (_mean_image_subtraction,
                                             _R_MEAN, _G_MEAN, _B_MEAN)
 
-def FCN_32s(image_tensor, number_of_classes, is_training):
+def FCN_32s(image_tensor,
+            number_of_classes,
+            is_training,
+            vgg_16_checkpoint_filename):
     
-    upsample_factor = 32
+    with tf.variable_scope("fcn_32s") as fcn_32_scope:
     
-    # Convert image to float32 before subtracting the
-    # mean pixel value
-    image_float = tf.to_float(image_tensor, name='ToFloat')
+        upsample_factor = 32
 
-    # Subtract the mean pixel value from each pixel
-    # TODO: remove the _mean_image_subtraction function
-    # dependency
-    mean_centered_image = _mean_image_subtraction(image_float,
-                                              [_R_MEAN, _G_MEAN, _B_MEAN])
+        # Convert image to float32 before subtracting the
+        # mean pixel value
+        image_float = tf.to_float(image_tensor, name='ToFloat')
 
-    processed_images = tf.expand_dims(mean_centered_image, 0)
+        # Subtract the mean pixel value from each pixel
+        # TODO: remove the _mean_image_subtraction function
+        # dependency
+        mean_centered_image = _mean_image_subtraction(image_float,
+                                                  [_R_MEAN, _G_MEAN, _B_MEAN])
 
-    upsample_filter_np = bilinear_upsample_weights(upsample_factor,
-                                                   number_of_classes)
+        processed_images = tf.expand_dims(mean_centered_image, 0)
 
-    upsample_filter_tensor = tf.constant(upsample_filter_np)
+        upsample_filter_np = bilinear_upsample_weights(upsample_factor,
+                                                       number_of_classes)
 
-    # Define the model that we want to use -- specify to use only two classes at the last layer
-    # TODO: make pull request to get this custom vgg feature accepted
-    # to avoid using custom slim repo.
-    with slim.arg_scope(vgg.vgg_arg_scope()):
+        upsample_filter_tensor = tf.constant(upsample_filter_np)
 
-        logits, end_points = vgg.vgg_16(processed_images,
-                               num_classes=number_of_classes,
-                               is_training=is_training,
-                               spatial_squeeze=False,
-                               fc_conv_padding='SAME')
+        # Define the model that we want to use -- specify to use only two classes at the last layer
+        # TODO: make pull request to get this custom vgg feature accepted
+        # to avoid using custom slim repo.
+        with slim.arg_scope(vgg.vgg_arg_scope()):
 
-    downsampled_logits_shape = tf.shape(logits)
+            logits, end_points = vgg.vgg_16(processed_images,
+                                   num_classes=number_of_classes,
+                                   is_training=is_training,
+                                   spatial_squeeze=False,
+                                   fc_conv_padding='SAME')
 
-    # Calculate the ouput size of the upsampled tensor
-    upsampled_logits_shape = tf.pack([
-                                      downsampled_logits_shape[0],
-                                      downsampled_logits_shape[1] * upsample_factor,
-                                      downsampled_logits_shape[2] * upsample_factor,
-                                      downsampled_logits_shape[3]
-                                     ])
+        downsampled_logits_shape = tf.shape(logits)
 
-    # Perform the upsampling
-    upsampled_logits = tf.nn.conv2d_transpose(logits, upsample_filter_tensor,
-                                     output_shape=upsampled_logits_shape,
-                                     strides=[1, upsample_factor, upsample_factor, 1])
-    
-    return upsampled_logits
+        # Calculate the ouput size of the upsampled tensor
+        upsampled_logits_shape = tf.pack([
+                                          downsampled_logits_shape[0],
+                                          downsampled_logits_shape[1] * upsample_factor,
+                                          downsampled_logits_shape[2] * upsample_factor,
+                                          downsampled_logits_shape[3]
+                                         ])
+
+        # Perform the upsampling
+        upsampled_logits = tf.nn.conv2d_transpose(logits, upsample_filter_tensor,
+                                         output_shape=upsampled_logits_shape,
+                                         strides=[1, upsample_factor, upsample_factor, 1])
+        
+        vgg_fc8_vars_full_scope_name = fcn_32_scope.original_name_scope + 'vgg_16/fc8'
+        vgg_vars_full_scope_name = fcn_32_scope.original_name_scope + 'vgg_16'
+
+        vgg_vars_only_fc8 = slim.get_variables(scope=vgg_fc8_vars_full_scope_name)
+        vgg_vars_without_fc8 = slim.get_variables_to_restore(include=[vgg_vars_full_scope_name],
+                                                        exclude=[vgg_fc8_vars_full_scope_name])
+        
+        recover_mapping = {}
+
+        for var in vgg_vars_without_fc8:
+
+            original_string = var.name[len(fcn_32_scope.original_name_scope):-2]
+            recover_mapping[original_string] = var
+        
+        # Create an OP that performs the initialization of
+        # values of variables to the values from VGG.
+        read_vgg_weights_except_fc8_func = slim.assign_from_checkpoint_fn(
+                                           vgg_16_checkpoint_filename,
+                                           recover_mapping)
+
+        # Initializer for new fc8 weights -- for two classes.
+        vgg_fc8_weights_initializer = tf.variables_initializer(vgg_vars_only_fc8)
+
+        def fcn_32s_initialization_func(current_session):
+
+            read_vgg_weights_except_fc8_func(current_session)
+            current_session.run(vgg_fc8_weights_initializer)
+
+        return upsampled_logits, fcn_32s_initialization_func
