@@ -153,6 +153,12 @@ def read_tfrecord_and_decode_into_image_annotation_pair_tensors(tfrecord_filenam
     width = tf.cast(features['width'], tf.int32)
     
     image_shape = tf.pack([height, width, 3])
+    
+    # The last dimension was added because
+    # the tf.resize_image_with_crop_or_pad() accepts tensors
+    # that have depth. We need resize and crop later.
+    # TODO: See if it is necessary and probably remove third
+    # dimension
     annotation_shape = tf.pack([height, width, 1])
     
     image = tf.reshape(image, image_shape)
