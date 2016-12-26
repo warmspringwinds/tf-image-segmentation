@@ -1,5 +1,8 @@
 import tensorflow as tf
 
+# Label value that is used to mark values
+# that should be eleminated from training
+MASK_OUT_LABEL = 255
 
 def get_labels_from_annotation(annotation_tensor, class_labels):
     """Returns tensor of size (width, height, num_classes) derived from annotation tensor.
@@ -47,7 +50,7 @@ def get_valid_entries_indices_from_annotation(annotation_tensor):
     # use for training. We do this because some pixels
     # are marked as ambigious and we don't want to use
     # them for trainig to avoid confusing the model
-    valid_labels_mask_2d = tf.not_equal(annotation_tensor, 255)
+    valid_labels_mask_2d = tf.not_equal(annotation_tensor, MASK_OUT_LABEL)
     
     valid_labels_indices = tf.where(valid_labels_mask_2d)
     
