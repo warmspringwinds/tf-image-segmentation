@@ -4,18 +4,22 @@ import tensorflow as tf
 def get_labels_from_annotation(annotation_tensor, class_labels):
     """Returns tensor of size (width, height, num_classes) derived from annotation tensor.
     The function returns tensor that is of a size (width, height, num_classes) which
-    is derived from annotation tensor with sizes (width, height, 1) where value at
+    is derived from annotation tensor with sizes (width, height) where value at
     each position represents a class. The functions requires a list with class
     values like [0, 1, 2 ,3] -- they are used to derive labels. Derived values will
-    be ordered in the same way as the class numbers were provided in the list.
+    be ordered in the same way as the class numbers were provided in the list. Last
+    value in the aforementioned list represents a value that indicate that the pixel
+    should be masked out. So, the size of num_classes len(class_labels) - 1.
+    
     Parameters
     ----------
-    annotation_tensor : Tensor of size (width, height, 1)
+    annotation_tensor : Tensor of size (width, height)
         Tensor with class labels for each element
     class_labels : list of ints
         List that contains the numbers that represent classes. Last
         value in the list should represent the number that was used
         for masking out.
+        
     Returns
     -------
     labels_2d_stacked : Tensor of size (width, height, num_classes).
@@ -38,19 +42,57 @@ def get_labels_from_annotation(annotation_tensor, class_labels):
     
     return labels_2d_stacked
 
-def get_valid_entries_indices_from_annotation(annotation_tensor, class_labels):
-    """Returns tensor of size (num_valid_eintries, 2).
-    Returns tensor that contains the indices of valid entries according
-    to the annotation tensor. This can be used to later on extract only
-    valid entries from logits tensor and labels tensor.
+def get_labels_from_annotation_batch(annotation_batch_tensor, class_labels):
+    """Returns tensor of size (batch_size, width, height, num_classes) derived
+    from annotation batch tensor. The function returns tensor that is of a size
+    (batch_size, width, height, num_classes) which is derived from annotation tensor
+    with sizes (batch_size, width, height) where value at each position represents a class.
+    The functions requires a list with class values like [0, 1, 2 ,3] -- they are
+    used to derive labels. Derived values will be ordered in the same way as
+    the class numbers were provided in the list. Last value in the aforementioned
+    list represents a value that indicate that the pixel should be masked out.
+    So, the size of num_classes len(class_labels) - 1.
+    
     Parameters
     ----------
-    annotation_tensor : Tensor of size (width, height, 1)
+    annotation_batch_tensor : Tensor of size (batch_size, width, height)
         Tensor with class labels for each element
     class_labels : list of ints
         List that contains the numbers that represent classes. Last
         value in the list should represent the number that was used
         for masking out.
+        
+    Returns
+    -------
+    batch_labels : Tensor of size (batch_size, width, height, num_classes).
+        Tensor with labels for each batch.
+    """
+    
+    batch_labels = tf.map_fn(fn=lambda x: get_labels_from_annotation(annotation_tensor=x, class_labels=class_labels),
+                             elems=annotation_batch_tensor,
+                             dtype=tf.bool)
+    return batch_labels
+
+def get_valid_entries_indices_from_annotation_batch(annotation_batch_tensor, class_labels):
+    """Returns tensor of size (num_valid_eintries, 3).
+    Returns tensor that contains the indices of valid entries according
+    to the annotation tensor. This can be used to later on extract only
+    valid entries from logits tensor and labels tensor. This function is
+    supposed to work with a batch input like [b, w, h] -- where b is a
+    batch size, w, h -- are width and height sizes. So the output is
+    a tensor which contains indexes of valid entries. This function can
+    also work with a single annotation like [w, h] -- the output will
+    be (num_valid_eintries, 2).
+    
+    Parameters
+    ----------
+    annotation_batch_tensor : Tensor of size (batch_size, width, height)
+        Tensor with class labels for each batch
+    class_labels : list of ints
+        List that contains the numbers that represent classes. Last
+        value in the list should represent the number that was used
+        for masking out.
+        
     Returns
     -------
     valid_labels_indices : Tensor of size (num_valid_eintries, 2).
@@ -68,10 +110,26 @@ def get_valid_entries_indices_from_annotation(annotation_tensor, class_labels):
     # use for training. We do this because some pixels
     # are marked as ambigious and we don't want to use
     # them for trainig to avoid confusing the model
-    valid_labels_mask_2d = tf.not_equal(annotation_tensor,
+    valid_labels_mask = tf.not_equal(annotation_batch_tensor,
                                         mask_out_class_label)
     
-    valid_labels_indices = tf.where(valid_labels_mask_2d)
+    valid_labels_indices = tf.where(valid_labels_mask)
     
     return valid_labels_indices
+
+
+def get_valid_logits_and_labels(annotation_batch_tensor,
+                                logits_batch_tensor,
+                                class_labels):
     
+    labels_batch_tensor = get_labels_from_annotation_batch(annotation_batch_tensor=annotation_batch_tensor,
+                                                           class_labels=class_labels)
+    
+    valid_batch_indices = get_valid_entries_indices_from_annotation_batch(annotation_batch_tensor=annotation_batch_tensor,
+                                                                          class_labels=class_labels)
+    
+    valid_labels_batch_tensor = tf.gather_nd(params=labels_batch_tensor, indices=valid_batch_indices)
+    
+    valid_logits_batch_tensor = tf.gather_nd(params=logits_batch_tensor, indices=valid_batch_indices)
+    
+    return valid_labels_batch_tensor, valid_logits_batch_tensor
