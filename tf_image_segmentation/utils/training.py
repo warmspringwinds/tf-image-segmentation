@@ -9,7 +9,7 @@ def get_labels_from_annotation(annotation_tensor, class_labels):
     values like [0, 1, 2 ,3] -- they are used to derive labels. Derived values will
     be ordered in the same way as the class numbers were provided in the list. Last
     value in the aforementioned list represents a value that indicate that the pixel
-    should be masked out. So, the size of num_classes len(class_labels) - 1.
+    should be masked out. So, the size of num_classes := len(class_labels) - 1.
     
     Parameters
     ----------
@@ -95,7 +95,7 @@ def get_valid_entries_indices_from_annotation_batch(annotation_batch_tensor, cla
         
     Returns
     -------
-    valid_labels_indices : Tensor of size (num_valid_eintries, 2).
+    valid_labels_indices : Tensor of size (num_valid_eintries, 3).
         Tensor with indices of valid entries
     """
     
@@ -121,6 +121,33 @@ def get_valid_entries_indices_from_annotation_batch(annotation_batch_tensor, cla
 def get_valid_logits_and_labels(annotation_batch_tensor,
                                 logits_batch_tensor,
                                 class_labels):
+    """Returns two tensors of size (num_valid_entries, num_classes).
+    The function converts annotation batch tensor input of the size
+    (batch_size, height, width) into label tensor (batch_size, height,
+    width, num_classes) and then selects only valid entries, resulting
+    in tensor of the size (num_valid_entries, num_classes). The function
+    also returns the tensor with corresponding valid entries in the logits
+    tensor. Overall, two tensors of the same sizes are returned and later on
+    can be used as an input into tf.softmax_cross_entropy_with_logits() to
+    get the cross entropy error for each entry.
+    
+    Parameters
+    ----------
+    annotation_batch_tensor : Tensor of size (batch_size, width, height)
+        Tensor with class labels for each batch
+    logits_batch_tensor : Tensor of size (batch_size, width, height, num_classes)
+        Tensor with logits. Usually can be achived after inference of fcn network.
+    class_labels : list of ints
+        List that contains the numbers that represent classes. Last
+        value in the list should represent the number that was used
+        for masking out.
+        
+    Returns
+    -------
+    (valid_labels_batch_tensor, valid_logits_batch_tensor) : Two Tensors of size (num_valid_eintries, num_classes).
+        Tensors that represent valid labels and logits.
+    """
+    
     
     labels_batch_tensor = get_labels_from_annotation_batch(annotation_batch_tensor=annotation_batch_tensor,
                                                            class_labels=class_labels)
