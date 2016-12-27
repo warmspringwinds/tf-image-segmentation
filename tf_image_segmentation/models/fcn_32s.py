@@ -13,7 +13,7 @@ from preprocessing import vgg_preprocessing
 # that performs the subtraction from each pixel
 from preprocessing.vgg_preprocessing import _R_MEAN, _G_MEAN, _B_MEAN
 
-def FCN_32s(image_tensor,
+def FCN_32s(image_batch_tensor,
             number_of_classes,
             is_training,
             vgg_16_checkpoint_filename):
@@ -24,10 +24,10 @@ def FCN_32s(image_tensor,
 
         # Convert image to float32 before subtracting the
         # mean pixel value
-        image_float = tf.to_float(image_tensor, name='ToFloat')
+        image_batch_float = tf.to_float(image_batch_tensor, name='ToFloat')
 
         # Subtract the mean pixel value from each pixel
-        mean_centered_image = image_float - [_R_MEAN, _G_MEAN, _B_MEAN]
+        mean_centered_image_batch = image_batch_float - [_R_MEAN, _G_MEAN, _B_MEAN]
 
         # processed_images = tf.expand_dims(mean_centered_image, 0)
 
@@ -41,7 +41,7 @@ def FCN_32s(image_tensor,
         # to avoid using custom slim repo.
         with slim.arg_scope(vgg.vgg_arg_scope()):
 
-            logits, end_points = vgg.vgg_16(processed_images,
+            logits, end_points = vgg.vgg_16(mean_centered_image_batch,
                                    num_classes=number_of_classes,
                                    is_training=is_training,
                                    spatial_squeeze=False,
