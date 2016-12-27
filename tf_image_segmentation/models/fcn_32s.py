@@ -27,8 +27,6 @@ def FCN_32s(image_tensor,
         image_float = tf.to_float(image_tensor, name='ToFloat')
 
         # Subtract the mean pixel value from each pixel
-        # TODO: remove the _mean_image_subtraction function
-        # dependency
         mean_centered_image = image_float - [_R_MEAN, _G_MEAN, _B_MEAN]
 
         # processed_images = tf.expand_dims(mean_centered_image, 0)
