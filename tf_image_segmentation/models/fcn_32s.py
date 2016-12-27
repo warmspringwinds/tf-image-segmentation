@@ -11,8 +11,7 @@ from preprocessing import vgg_preprocessing
 
 # Load the mean pixel values and the function
 # that performs the subtraction from each pixel
-from preprocessing.vgg_preprocessing import (_mean_image_subtraction,
-                                            _R_MEAN, _G_MEAN, _B_MEAN)
+from preprocessing.vgg_preprocessing import _R_MEAN, _G_MEAN, _B_MEAN
 
 def FCN_32s(image_tensor,
             number_of_classes,
@@ -30,10 +29,9 @@ def FCN_32s(image_tensor,
         # Subtract the mean pixel value from each pixel
         # TODO: remove the _mean_image_subtraction function
         # dependency
-        mean_centered_image = _mean_image_subtraction(image_float,
-                                                  [_R_MEAN, _G_MEAN, _B_MEAN])
+        mean_centered_image = image_float - [_R_MEAN, _G_MEAN, _B_MEAN]
 
-        processed_images = tf.expand_dims(mean_centered_image, 0)
+        # processed_images = tf.expand_dims(mean_centered_image, 0)
 
         upsample_filter_np = bilinear_upsample_weights(upsample_factor,
                                                        number_of_classes)
