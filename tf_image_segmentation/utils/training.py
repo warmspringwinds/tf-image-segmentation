@@ -40,7 +40,13 @@ def get_labels_from_annotation(annotation_tensor, class_labels):
     # Perform the merging of all of the binary masks into one matrix
     labels_2d_stacked = tf.stack(labels_2d, axis=2)
     
-    return labels_2d_stacked
+    # Convert tf.bool to tf.float
+    # Later on in the labels and logits will be used
+    # in tf.softmax_cross_entropy_with_logits() function
+    # where they have to be of the float type.
+    labels_2d_stacked_float = tf.to_float(labels_2d_stacked)
+    
+    return labels_2d_stacked_float
 
 def get_labels_from_annotation_batch(annotation_batch_tensor, class_labels):
     """Returns tensor of size (batch_size, width, height, num_classes) derived
@@ -70,7 +76,8 @@ def get_labels_from_annotation_batch(annotation_batch_tensor, class_labels):
     
     batch_labels = tf.map_fn(fn=lambda x: get_labels_from_annotation(annotation_tensor=x, class_labels=class_labels),
                              elems=annotation_batch_tensor,
-                             dtype=tf.bool)
+                             dtype=tf.float32)
+    
     return batch_labels
 
 def get_valid_entries_indices_from_annotation_batch(annotation_batch_tensor, class_labels):
