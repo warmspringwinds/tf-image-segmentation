@@ -122,7 +122,7 @@ def get_valid_entries_indices_from_annotation_batch(annotation_batch_tensor, cla
     
     valid_labels_indices = tf.where(valid_labels_mask)
     
-    return valid_labels_indices
+    return tf.to_int32(valid_labels_indices)
 
 
 def get_valid_logits_and_labels(annotation_batch_tensor,
