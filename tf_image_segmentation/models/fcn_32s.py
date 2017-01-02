@@ -13,13 +13,30 @@ from preprocessing import vgg_preprocessing
 # that performs the subtraction from each pixel
 from preprocessing.vgg_preprocessing import _R_MEAN, _G_MEAN, _B_MEAN
 
+
+def extract_vgg_16_mapping_without_fc8(vgg_16_variables_mapping):
+
+    vgg_16_keys = vgg_16_variables_mapping.keys()
+
+    vgg_16_without_fc8_keys = []
+
+    for key in vgg_16_keys:
+
+        if 'fc8' not in key:
+            vgg_16_without_fc8_keys.append(key)
+
+    result = {key: vgg_16_variables_mapping[key] for key in vgg_16_without_fc8_keys}
+    
+    return result
+
+
+
 def FCN_32s(image_batch_tensor,
             number_of_classes,
-            is_training,
-            vgg_16_checkpoint_filename):
+            is_training):
     
-    with tf.variable_scope("fcn_32s") as fcn_32_scope:
-    
+    with tf.variable_scope("fcn_32s") as fcn_32s_scope:
+
         upsample_factor = 32
 
         # Convert image to float32 before subtracting the
@@ -28,8 +45,6 @@ def FCN_32s(image_batch_tensor,
 
         # Subtract the mean pixel value from each pixel
         mean_centered_image_batch = image_batch_float - [_R_MEAN, _G_MEAN, _B_MEAN]
-
-        # processed_images = tf.expand_dims(mean_centered_image, 0)
 
         upsample_filter_np = bilinear_upsample_weights(upsample_factor,
                                                        number_of_classes)
@@ -61,33 +76,20 @@ def FCN_32s(image_batch_tensor,
         upsampled_logits = tf.nn.conv2d_transpose(logits, upsample_filter_tensor,
                                          output_shape=upsampled_logits_shape,
                                          strides=[1, upsample_factor, upsample_factor, 1])
-        
-        vgg_fc8_vars_full_scope_name = fcn_32_scope.original_name_scope + 'vgg_16/fc8'
-        vgg_vars_full_scope_name = fcn_32_scope.original_name_scope + 'vgg_16'
 
-        vgg_vars_only_fc8 = slim.get_variables(scope=vgg_fc8_vars_full_scope_name)
-        vgg_vars_without_fc8 = slim.get_variables_to_restore(include=[vgg_vars_full_scope_name],
-                                                        exclude=[vgg_fc8_vars_full_scope_name])
-        
-        recover_mapping = {}
+        # Let's map the original vgg-16 variable names
+        # to the variables in our model. This is done
+        # to make it possible to use assign_from_checkpoint_fn()
+        # while providing this mapping.
+        vgg_16_variables_mapping = {}
 
-        for var in vgg_vars_without_fc8:
+        vgg_16_variables = slim.get_variables(fcn_32s_scope)
 
-            original_string = var.name[len(fcn_32_scope.original_name_scope):-2]
-            recover_mapping[original_string] = var
-        
-        # Create an OP that performs the initialization of
-        # values of variables to the values from VGG.
-        read_vgg_weights_except_fc8_func = slim.assign_from_checkpoint_fn(
-                                           vgg_16_checkpoint_filename,
-                                           recover_mapping)
+        for variable in vgg_16_variables:
 
-        # Initializer for new fc8 weights -- for two classes.
-        vgg_fc8_weights_initializer = tf.variables_initializer(vgg_vars_only_fc8)
+            # Here we remove the part of a name of the variable
+            # that is responsible for the current variable scope
+            original_vgg_16_checkpoint_string = variable.name[len(fcn_32s_scope.original_name_scope):-2]
+            vgg_16_variables_mapping[original_vgg_16_checkpoint_string] = variable
 
-        def fcn_32s_initialization_func(current_session):
-
-            read_vgg_weights_except_fc8_func(current_session)
-            current_session.run(vgg_fc8_weights_initializer)
-
-        return upsampled_logits, fcn_32s_initialization_func
+    return upsampled_logits, vgg_16_variables_mapping
