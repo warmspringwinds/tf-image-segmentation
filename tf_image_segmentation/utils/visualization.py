@@ -2,7 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 
-def _discrete_matshow(data, labels_names=[], title=""):
+def _discrete_matshow_adaptive(data, labels_names=[], title=""):
     """Displays segmentation results using colormap that is adapted
     to a number of classes. Uses labels_names to write class names
     aside the color label. Used as a helper function for 
@@ -74,4 +74,4 @@ def visualize_segmentation_adaptive(predictions, segmentation_class_lut, title="
 
         labels_names.append(str(index) + ' ' + segmentation_class_lut[current_class_number])
 
-    _discrete_matshow(data=relabeled_image, labels_names=labels_names, title=title)
+    _discrete_matshow_adaptive(data=relabeled_image, labels_names=labels_names, title=title)
