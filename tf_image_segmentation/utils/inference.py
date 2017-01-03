@@ -26,6 +26,8 @@ def adapt_network_for_any_size_input(network_definition, multiple):
     
     def new_network_definition(*args, **kwargs):
         
+        # The first argument of the network definition
+        # should be 'image_batch_tensor'
         if 'image_batch_tensor' in kwargs:
 
             image_batch_tensor = kwargs['image_batch_tensor']
@@ -54,6 +56,9 @@ def adapt_network_for_any_size_input(network_definition, multiple):
         
         upsampled_logits_batch = all_outputs[0]
         
+        
+        # TODO: check if it works with logits, maybe there is no need
+        # to do argmax
         pred = tf.argmax(upsampled_logits_batch, dimension=3)
 
         temp_pred = tf.expand_dims(pred, 3)
