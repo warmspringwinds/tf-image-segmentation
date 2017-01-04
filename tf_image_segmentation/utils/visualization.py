@@ -61,7 +61,7 @@ def visualize_segmentation_adaptive(predictions, segmentation_class_lut, title="
     """
     
     # TODO: add non-adaptive visualization function, where the colorbar
-    # will have constant colorbar with names
+    # will be constant with names
     
     unique_classes, relabeled_image = np.unique(predictions,
                                                 return_inverse=True)
