@@ -322,3 +322,56 @@ def get_pascal_berkeley_augmented_segmentation_images_lists_txts(pascal_berkeley
             pascal_train_list_filename,
             pascal_validation_list_filename
            ]
+
+
+def get_pascal_berkeley_augmented_segmentation_image_annotation_filenames_pairs(pascal_berkeley_root):
+    """Return (image, annotation) filenames pairs from PASCAL Berkeley VOC segmentation dataset.
+    Returns three dimensional array where first dimension represents the type
+    of the dataset: train, val in the respective order. Second
+    dimension represents the a pair of images in that belongs to a particular
+    dataset. And third one is responsible for the first or second element in the
+    dataset.
+    Parameters
+    ----------
+    pascal_root : string
+        Path to the PASCAL Berkeley VOC dataset root that is usually named 'benchmark_RELEASE'
+        after being extracted from tar file.
+    Returns
+    -------
+    image_annotation_filename_pairs : 
+        Array with filename pairs.
+    """
+
+    pascal_relative_images_folder = 'dataset/img'
+    pascal_relative_class_annotations_folder = 'dataset/cls_png'
+
+    images_extention = 'jpg'
+    annotations_extention = 'png'
+
+    pascal_images_folder = os.path.join(pascal_berkeley_root, pascal_relative_images_folder)
+    pascal_class_annotations_folder = os.path.join(pascal_berkeley_root, pascal_relative_class_annotations_folder)
+
+    pascal_images_lists_txts = get_pascal_berkeley_augmented_segmentation_images_lists_txts(pascal_berkeley_root)
+
+    pascal_image_names = readlines_with_strip_array_version(pascal_images_lists_txts)
+
+    images_full_names = add_full_path_and_extention_to_filenames_array_version(pascal_image_names,
+                                                                               pascal_images_folder,
+                                                                               images_extention)
+
+    annotations_full_names = add_full_path_and_extention_to_filenames_array_version(pascal_image_names,
+                                                                                    pascal_class_annotations_folder,
+                                                                                    annotations_extention)
+
+    # Combine so that we have [(images full filenames, annotation full names), .. ]
+    # where each element in the array represent train, val, trainval sets.
+    # Overall, we have 3 elements in the array.
+    temp = zip(images_full_names, annotations_full_names)
+
+    # Now we should combine the elements of images full filenames annotation full names
+    # so that we have pairs of respective image plus annotation
+    # [[(pair_1), (pair_1), ..], [(pair_1), (pair_2), ..] ..]
+    # Overall, we have 3 elements -- representing train/val/trainval datasets
+    image_annotation_filename_pairs = map(lambda x: zip(*x), temp)
+
+    return image_annotation_filename_pairs
