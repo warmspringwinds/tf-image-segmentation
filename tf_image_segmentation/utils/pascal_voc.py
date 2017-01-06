@@ -296,7 +296,7 @@ def get_pascal_berkeley_augmented_segmentation_images_lists_txts(pascal_berkeley
     
     Parameters
     ----------
-    pascal_root : string
+    pascal_berkeley_root : string
         Full path to the root of PASCAL VOC Berkley augmented dataset.
     
     Returns
@@ -310,6 +310,8 @@ def get_pascal_berkeley_augmented_segmentation_images_lists_txts(pascal_berkeley
     segmentation_images_lists_folder = os.path.join(pascal_berkeley_root,
                                                     segmentation_images_lists_relative_folder)
     
+    
+    # TODO: add function that will joing both train.txt and val.txt into trainval.txt
     pascal_train_list_filename = os.path.join(segmentation_images_lists_folder,
                                               'train.txt')
 
