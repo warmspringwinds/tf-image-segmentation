@@ -373,5 +373,7 @@ def get_pascal_berkeley_augmented_segmentation_image_annotation_filenames_pairs(
     # [[(pair_1), (pair_1), ..], [(pair_1), (pair_2), ..] ..]
     # Overall, we have 3 elements -- representing train/val/trainval datasets
     image_annotation_filename_pairs = map(lambda x: zip(*x), temp)
+    
+    # TODO: important! -- combine berkeley and pascal voc (union)
 
     return image_annotation_filename_pairs
