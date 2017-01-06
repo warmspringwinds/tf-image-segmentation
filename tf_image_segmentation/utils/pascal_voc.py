@@ -234,7 +234,7 @@ def convert_pascal_berkeley_augmented_mat_annotations_to_png(pascal_berkeley_aug
     
     import scipy.io
     
-    def read_class_annotation_array_from_berkley_mat(mat_filename, key='GTcls'):
+    def read_class_annotation_array_from_berkeley_mat(mat_filename, key='GTcls'):
     
         #  Mat to png conversion for http://www.cs.berkeley.edu/~bharath2/codes/SBD/download.html
         # 'GTcls' key is for class segmentation
@@ -283,7 +283,40 @@ def convert_pascal_berkeley_augmented_mat_annotations_to_png(pascal_berkeley_aug
         
         current_png_file_full_path_to_be_saved += png_file_extension_string
 
-        annotation_array = read_class_annotation_array_from_berkley_mat(current_mat_file_full_path)
+        annotation_array = read_class_annotation_array_from_berkeley_mat(current_mat_file_full_path)
         
         # TODO: hide 'low-contrast' image warning during saving.
         io.imsave(current_png_file_full_path_to_be_saved, annotation_array)
+
+
+def get_pascal_berkeley_augmented_segmentation_images_lists_txts(pascal_berkeley_root):
+    """Return full paths to files in PASCAL Berkley augmented VOC with train and val image name lists.
+    This function returns full paths to files which contain names of images
+    and respective annotations for the segmentation in PASCAL VOC.
+    
+    Parameters
+    ----------
+    pascal_root : string
+        Full path to the root of PASCAL VOC Berkley augmented dataset.
+    
+    Returns
+    -------
+    full_filenames_txts : [string, string]
+        Array that contains paths for train/val txts with images names.
+    """
+    
+    segmentation_images_lists_relative_folder = 'dataset'
+    
+    segmentation_images_lists_folder = os.path.join(pascal_berkeley_root,
+                                                    segmentation_images_lists_relative_folder)
+    
+    pascal_train_list_filename = os.path.join(segmentation_images_lists_folder,
+                                              'train.txt')
+
+    pascal_validation_list_filename = os.path.join(segmentation_images_lists_folder,
+                                                   'val.txt')
+    
+    return [
+            pascal_train_list_filename,
+            pascal_validation_list_filename
+           ]
