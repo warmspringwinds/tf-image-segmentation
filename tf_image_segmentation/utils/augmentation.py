@@ -42,8 +42,10 @@ def scale_jittering_tensor_with_fixed_size_output(img_tensor,
         
     Returns
     -------
-    labels_2d_stacked : Tensor of size (width, height, num_classes).
-        Tensor with labels for each pixel.
+    cropped_padded_img : Tensor of size (output_shape[0], output_shape[1], 3).
+        Image Tensor that was randomly scaled
+    cropped_padded_annotation : Tensor of size (output_shape[0], output_shape[1], 1)
+        Respective annotation Tensor that was randomly scaled with the same parameters
     """
     
     # tf.image.resize_nearest_neighbor needs
