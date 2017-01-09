@@ -1,4 +1,53 @@
 import tensorflow as tf
+import sys
+
+# Using custom slim repository
+# TODO: make a sys.path.append visible for the whole repository
+
+sys.path.append("/home/dpakhom1/workspace/my_models/slim/")
+slim = tf.contrib.slim
+
+from preprocessing.inception_preprocessing import distort_color, apply_with_random_selector
+
+
+def distort_color_image_tensor(image_tensor, fast_mode=False):
+    """Accepts image tensor of (width, height, 3) and returns color distorted image.
+    The function performs random brightness, saturation, hue, contrast change as it is performed
+    for inception model training in TF-Slim (you can find the link below in comments). All the
+    parameters of random variables were originally preserved. There are two regimes for the function
+    to work: fast and slow. Slow one performs only saturation and brightness random change is performed.
+    
+    Parameters
+    ----------
+    image_tensor : Tensor of size (width, height, 3) of tf.int32 or tf.float
+        Tensor with image with range [0,255]
+    fast_mode : boolean
+        Boolean value representing whether to use fast or slow mode
+        
+    Returns
+    -------
+    img_float_distorted_original_range : Tensor of size (width, height, 3) of type tf.float.
+        Image Tensor with distorted color
+    """
+    
+    # Make the range to be in [0,1]
+    img_float_zero_one_range = tf.to_float(image_tensor) / 255
+    
+    # Randomly distort the color of image. There are 4 ways to do it.
+    # Credit: TF-Slim
+    # https://github.com/tensorflow/models/blob/master/slim/preprocessing/inception_preprocessing.py#L224
+    # Most probably the inception models were trainined using this color augmentation:
+    # https://github.com/tensorflow/models/tree/master/slim#pre-trained-models
+    distorted_image = apply_with_random_selector(
+                                        img_float_zero_one_range,
+                                        lambda x, ordering: distort_color(x, ordering, fast_mode=fast_mode),
+                                        num_cases=4)
+    
+    img_float_distorted_original_range = distorted_image * 255
+    
+    return img_float_distorted_original_range
+    
+    
 
 
 def scale_jittering_tensor_with_fixed_size_output(img_tensor,
