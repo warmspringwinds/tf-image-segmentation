@@ -27,7 +27,7 @@ def distort_color_image_tensor(image_tensor, fast_mode=False):
     Returns
     -------
     img_float_distorted_original_range : Tensor of size (width, height, 3) of type tf.float.
-        Image Tensor with distorted color
+        Image Tensor with distorted color in [0,255] intensity range
     """
     
     # Make the range to be in [0,1]
