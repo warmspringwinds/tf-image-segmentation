@@ -4,9 +4,9 @@ import tensorflow as tf
 def scale_jittering_tensor_with_fixed_size_output(img_tensor,
                                                   annotation_tensor,
                                                   output_shape,
-                                                  min_relative_random_scale_change,
-                                                  max_realtive_random_scale_change,
-                                                  mask_out_number):
+                                                  min_relative_random_scale_change=0.9,
+                                                  max_realtive_random_scale_change=1.1,
+                                                  mask_out_number=255):
     """Returns tensor of a size (output_shape, output_shape, depth) and (output_shape, output_shape, 1).
     The function returns tensor that is of a size (output_shape, output_shape, depth)
     which is randomly scaled by a factor that is sampled from a uniform distribution
