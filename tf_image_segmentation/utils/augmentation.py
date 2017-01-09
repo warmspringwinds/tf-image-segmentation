@@ -11,7 +11,7 @@ slim = tf.contrib.slim
 from preprocessing.inception_preprocessing import distort_color, apply_with_random_selector
 
 
-def random_flip_left_right_with_annotation(image_tensor, annotation_tensor):
+def flip_randomly_left_right_image_with_annotation(image_tensor, annotation_tensor):
     """Accepts image tensor and annotation tensor and returns randomly flipped tensors of both.
     The function performs random flip of image and annotation tensors with probability of 1/2
     The flip is performed or not performed for image and annotation consistently, so that
@@ -49,7 +49,7 @@ def random_flip_left_right_with_annotation(image_tensor, annotation_tensor):
     return randomly_flipped_img, randomly_flipped_annotation
 
 
-def distort_color_image_tensor(image_tensor, fast_mode=False):
+def distort_randomly_image_color(image_tensor, fast_mode=False):
     """Accepts image tensor of (width, height, 3) and returns color distorted image.
     The function performs random brightness, saturation, hue, contrast change as it is performed
     for inception model training in TF-Slim (you can find the link below in comments). All the
@@ -88,12 +88,12 @@ def distort_color_image_tensor(image_tensor, fast_mode=False):
     
 
 
-def scale_jittering_tensor_with_fixed_size_output(img_tensor,
-                                                  annotation_tensor,
-                                                  output_shape,
-                                                  min_relative_random_scale_change=0.9,
-                                                  max_realtive_random_scale_change=1.1,
-                                                  mask_out_number=255):
+def scale_randomly_image_with_annotation_with_fixed_size_output(img_tensor,
+                                                                annotation_tensor,
+                                                                output_shape,
+                                                                min_relative_random_scale_change=0.9,
+                                                                max_realtive_random_scale_change=1.1,
+                                                                mask_out_number=255):
     """Returns tensor of a size (output_shape, output_shape, depth) and (output_shape, output_shape, 1).
     The function returns tensor that is of a size (output_shape, output_shape, depth)
     which is randomly scaled by a factor that is sampled from a uniform distribution
