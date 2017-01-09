@@ -43,8 +43,8 @@ def random_flip_left_right_with_annotation(image_tensor, annotation_tensor):
                                                  fn2=lambda: image_tensor)
 
     randomly_flipped_annotation = control_flow_ops.cond(pred=tf.equal(random_var, 0),
-                                                 fn1=lambda: tf.image.flip_left_right(annotation_tensor),
-                                                 fn2=lambda: annotation_tensor)
+                                                        fn1=lambda: tf.image.flip_left_right(annotation_tensor),
+                                                        fn2=lambda: annotation_tensor)
     
     return randomly_flipped_img, randomly_flipped_annotation
 
@@ -77,10 +77,9 @@ def distort_color_image_tensor(image_tensor, fast_mode=False):
     # https://github.com/tensorflow/models/blob/master/slim/preprocessing/inception_preprocessing.py#L224
     # Most probably the inception models were trainined using this color augmentation:
     # https://github.com/tensorflow/models/tree/master/slim#pre-trained-models
-    distorted_image = apply_with_random_selector(
-                                        img_float_zero_one_range,
-                                        lambda x, ordering: distort_color(x, ordering, fast_mode=fast_mode),
-                                        num_cases=4)
+    distorted_image = apply_with_random_selector(img_float_zero_one_range,
+                                                 lambda x, ordering: distort_color(x, ordering, fast_mode=fast_mode),
+                                                 num_cases=4)
     
     img_float_distorted_original_range = distorted_image * 255
     
