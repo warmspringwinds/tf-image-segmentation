@@ -1,3 +1,4 @@
+from tensorflow.python.ops import control_flow_ops
 import tensorflow as tf
 import sys
 
@@ -8,6 +9,44 @@ sys.path.append("/home/dpakhom1/workspace/my_models/slim/")
 slim = tf.contrib.slim
 
 from preprocessing.inception_preprocessing import distort_color, apply_with_random_selector
+
+
+def random_flip_left_right_with_annotation(image_tensor, annotation_tensor):
+    """Accepts image tensor and annotation tensor and returns randomly flipped tensors of both.
+    The function performs random flip of image and annotation tensors with probability of 1/2
+    The flip is performed or not performed for image and annotation consistently, so that
+    annotation matches the image.
+    
+    Parameters
+    ----------
+    image_tensor : Tensor of size (width, height, 3)
+        Tensor with image
+    annotation_tensor : Tensor of size (width, height, 1)
+        Tensor with annotation
+        
+    Returns
+    -------
+    randomly_flipped_img : Tensor of size (width, height, 3) of type tf.float.
+        Randomly flipped image tensor
+    randomly_flipped_annotation : Tensor of size (width, height, 1)
+        Randomly flipped annotation tensor
+        
+    """
+    
+    # Random variable: two possible outcomes (0 or 1)
+    # with a 1 in 2 chance
+    random_var = tf.random_uniform(maxval=2, dtype=tf.int32, shape=[])
+
+
+    randomly_flipped_img = control_flow_ops.cond(pred=tf.equal(random_var, 0),
+                                                 fn1=lambda: tf.image.flip_left_right(image_tensor),
+                                                 fn2=lambda: image_tensor)
+
+    randomly_flipped_annotation = control_flow_ops.cond(pred=tf.equal(random_var, 0),
+                                                 fn1=lambda: tf.image.flip_left_right(annotation_tensor),
+                                                 fn2=lambda: annotation_tensor)
+    
+    return randomly_flipped_img, randomly_flipped_annotation
 
 
 def distort_color_image_tensor(image_tensor, fast_mode=False):
