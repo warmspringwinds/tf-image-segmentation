@@ -417,3 +417,43 @@ def get_pascal_berkeley_augmented_selected_image_annotation_filenames_pairs(pasc
                                  annotations_full_names)
     
     return image_annotation_pairs
+
+
+def get_pascal_selected_image_annotation_filenames_pairs(pascal_root, selected_names):
+    """Returns (image, annotation) filenames pairs from PASCAL VOC segmentation dataset for selected names.
+    The function accepts the selected file names from PASCAL VOC segmentation dataset
+    and returns image, annotation pairs with fullpath and extention for those names.
+    Parameters
+    ----------
+    pascal_root : string
+        Path to the PASCAL VOC dataset root that is usually named 'VOC2012'
+        after being extracted from tar file.
+    selected_names : array of strings
+        Selected filenames from PASCAL VOC that can be read from txt files that
+        come with dataset.
+    Returns
+    -------
+    image_annotation_pairs : 
+        Array with filename pairs with fullnames.
+    """
+    pascal_relative_images_folder = 'JPEGImages'
+    pascal_relative_class_annotations_folder = 'SegmentationClass'
+    
+    images_extention = 'jpg'
+    annotations_extention = 'png'
+    
+    pascal_images_folder = os.path.join(pascal_root, pascal_relative_images_folder)
+    pascal_class_annotations_folder = os.path.join(pascal_root, pascal_relative_class_annotations_folder)
+    
+    images_full_names = add_full_path_and_extention_to_filenames(selected_names,
+                                                                 pascal_images_folder,
+                                                                 images_extention)
+    
+    annotations_full_names = add_full_path_and_extention_to_filenames(selected_names,
+                                                                      pascal_class_annotations_folder,
+                                                                      annotations_extention)
+    
+    image_annotation_pairs = zip(images_full_names, 
+                                 annotations_full_names)
+    
+    return image_annotation_pairs
