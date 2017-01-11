@@ -457,3 +457,104 @@ def get_pascal_selected_image_annotation_filenames_pairs(pascal_root, selected_n
                                  annotations_full_names)
     
     return image_annotation_pairs
+
+def get_augmented_pascal_image_annotation_filename_pairs(pascal_root, pascal_berkeley_root, mode=2):
+    """Returns image/annotation filenames pairs train/val splits from combined Pascal VOC.
+    Returns two arrays with train and validation split respectively that has
+    image full filename/ annotation full filename pairs in each of the that were derived
+    from PASCAL and PASCAL Berkeley Augmented dataset. The Berkley augmented dataset
+    can be downloaded from here:
+    http://www.eecs.berkeley.edu/Research/Projects/CS/vision/grouping/semantic_contours/benchmark.tgz
+    The PASCAL VOC dataset can be downloaded from here:
+    http://host.robots.ox.ac.uk/pascal/VOC/voc2012/VOCtrainval_11-May-2012.tar
+    Consider specifying root full names for both of them as arguments for this function
+    after extracting them.
+    The function has three type of train/val splits(credit matconvnet-fcn):
+    
+        Let BT, BV, PT, PV, and PX be the Berkeley training and validation
+        sets and PASCAL segmentation challenge training, validation, and
+        test sets. Let T, V, X the final trainig, validation, and test
+        sets.
+
+        Mode 1::
+              V = PV (same validation set as PASCAL)
+
+        Mode 2:: (default))
+              V = PV \ BT (PASCAL val set that is not a Berkeley training
+              image)
+
+        Mode 3::
+              V = PV \ (BV + BT)
+
+        In all cases:
+
+              S = PT + PV + BT + BV
+              X = PX  (the test set is uncahgend)
+              T = (S \ V) \ X (the rest is training material)
+    Parameters
+    ----------
+    pascal_root : string
+        Path to the PASCAL VOC dataset root that is usually named 'VOC2012'
+        after being extracted from tar file.
+    pascal_berkeley_root : string
+        Path to the PASCAL Berkeley VOC dataset root that is usually named 'benchmark_RELEASE'
+        after being extracted from tar file.
+    mode: int
+        The type of train/val data split. Read the function main description for more info.
+    Returns
+    -------
+    image_annotation_pairs : [[(string, string), .. , (string, string)][(string, string), .., (string, string)]]
+        Array with filename pairs with fullnames.
+    """
+    pascal_txts = get_pascal_segmentation_images_lists_txts(pascal_root=pascal_root)
+    berkeley_txts = get_pascal_berkeley_augmented_segmentation_images_lists_txts(pascal_berkeley_root=pascal_berkeley_root)
+
+    pascal_name_lists = readlines_with_strip_array_version(pascal_txts)
+    berkeley_name_lists = readlines_with_strip_array_version(berkeley_txts)
+
+    pascal_train_name_set, pascal_val_name_set, _ = map(lambda x: set(x), pascal_name_lists)
+    berkeley_train_name_set, berkeley_val_name_set = map(lambda x: set(x), berkeley_name_lists)
+
+    all_berkeley = berkeley_train_name_set | berkeley_val_name_set
+    all_pascal = pascal_train_name_set | pascal_val_name_set
+
+    everything = all_berkeley | all_pascal
+
+    # Extract the validation subset based on selected mode
+    if mode == 1:
+
+        # 1449 validation images, 10582 training images
+        validation = pascal_val_name_set
+
+    if mode == 2:
+
+        # 904 validatioin images, 11127 training images
+        validation = pascal_val_name_set - berkeley_train_name_set
+
+    if mode == 3:
+
+        # 346 validation images, 11685 training images
+        validation = pascal_val_name_set - all_berkeley
+
+    # The rest of the dataset is for training
+    train = everything - validation
+
+    # Get the part that can be extracted from berkeley
+    train_from_berkeley = train & all_berkeley
+
+    # The rest of the data will be loaded from pascal
+    train_from_pascal = train - train_from_berkeley
+
+    train_from_berkeley_image_annotation_pairs = \
+    get_pascal_berkeley_augmented_selected_image_annotation_filenames_pairs(pascal_berkeley_root, list(train_from_berkeley))
+
+    train_from_pascal_image_annotation_pairs = \
+    get_pascal_selected_image_annotation_filenames_pairs(pascal_root, list(train_from_pascal))
+
+    overall_train_image_annotation_filename_pairs = \
+    train_from_berkeley_image_annotation_pairs + train_from_pascal_image_annotation_pairs
+
+    overall_val_image_annotation_filename_pairs = \
+    get_pascal_selected_image_annotation_filenames_pairs(pascal_root, validation)
+
+    return overall_train_image_annotation_filename_pairs, overall_val_image_annotation_filename_pairs
