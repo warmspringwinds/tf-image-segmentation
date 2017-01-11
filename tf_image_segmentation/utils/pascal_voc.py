@@ -548,15 +548,18 @@ def get_augmented_pascal_image_annotation_filename_pairs(pascal_root, pascal_ber
     train_from_pascal = train - train_from_berkeley
 
     train_from_berkeley_image_annotation_pairs = \
-    get_pascal_berkeley_augmented_selected_image_annotation_filenames_pairs(pascal_berkeley_root, list(train_from_berkeley))
+    get_pascal_berkeley_augmented_selected_image_annotation_filenames_pairs(pascal_berkeley_root,
+                                                                            list(train_from_berkeley))
 
     train_from_pascal_image_annotation_pairs = \
-    get_pascal_selected_image_annotation_filenames_pairs(pascal_root, list(train_from_pascal))
+    get_pascal_selected_image_annotation_filenames_pairs(pascal_root,
+                                                         list(train_from_pascal))
 
     overall_train_image_annotation_filename_pairs = \
     train_from_berkeley_image_annotation_pairs + train_from_pascal_image_annotation_pairs
 
     overall_val_image_annotation_filename_pairs = \
-    get_pascal_selected_image_annotation_filenames_pairs(pascal_root, validation)
+    get_pascal_selected_image_annotation_filenames_pairs(pascal_root,
+                                                         validation)
 
     return overall_train_image_annotation_filename_pairs, overall_val_image_annotation_filename_pairs
