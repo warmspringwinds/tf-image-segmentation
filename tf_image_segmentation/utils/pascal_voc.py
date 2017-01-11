@@ -465,6 +465,8 @@ def get_augmented_pascal_image_annotation_filename_pairs(pascal_root, pascal_ber
     from PASCAL and PASCAL Berkeley Augmented dataset. The Berkley augmented dataset
     can be downloaded from here:
     http://www.eecs.berkeley.edu/Research/Projects/CS/vision/grouping/semantic_contours/benchmark.tgz
+    Consider running convert_pascal_berkeley_augmented_mat_annotations_to_png() after extraction.
+    
     The PASCAL VOC dataset can be downloaded from here:
     http://host.robots.ox.ac.uk/pascal/VOC/voc2012/VOCtrainval_11-May-2012.tar
     Consider specifying root full names for both of them as arguments for this function
