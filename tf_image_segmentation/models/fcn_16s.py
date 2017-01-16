@@ -114,7 +114,7 @@ def FCN_16s(image_batch_tensor,
 
                 # Here we remove the part of a name of the variable
                 # that is responsible for the current variable scope
-                original_fcn_32s_checkpoint_string = 'fcn32s/' +  variable.name[len(fcn_16s_scope.original_name_scope):-2]
+                original_fcn_32s_checkpoint_string = 'fcn_32s/' +  variable.name[len(fcn_16s_scope.original_name_scope):-2]
                 fcn_32s_variables_mapping[original_fcn_32s_checkpoint_string] = variable
 
     return fused_last_layer_and_pool4_upsampled_by_factor_16_logits, fcn_32s_variables_mapping
