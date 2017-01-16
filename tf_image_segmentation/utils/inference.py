@@ -56,7 +56,6 @@ def adapt_network_for_any_size_input(network_definition, multiple):
         
         upsampled_logits_batch = all_outputs[0]
         
-        
         # TODO: check if it works with logits, maybe there is no need
         # to do argmax
         pred = tf.argmax(upsampled_logits_batch, dimension=3)
