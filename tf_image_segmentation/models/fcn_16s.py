@@ -1,13 +1,9 @@
-import sys
+from nets import vgg
 import tensorflow as tf
+from preprocessing import vgg_preprocessing
 from ..utils.upsampling import bilinear_upsample_weights
 
-
-# Using custom slim repository
-sys.path.append("/home/dpakhom1/workspace/my_models/slim/")
 slim = tf.contrib.slim
-from nets import vgg
-from preprocessing import vgg_preprocessing
 
 # Load the mean pixel values and the function
 # that performs the subtraction from each pixel
@@ -21,7 +17,7 @@ def FCN_16s(image_batch_tensor,
 
     # Convert image to float32 before subtracting the
     # mean pixel value
-    image_batch_float = tf.to_float(image_batch_tensor, name='ToFloat')
+    image_batch_float = tf.to_float(image_batch_tensor)
 
     # Subtract the mean pixel value from each pixel
     mean_centered_image_batch = image_batch_float - [_R_MEAN, _G_MEAN, _B_MEAN]
@@ -63,7 +59,7 @@ def FCN_16s(image_batch_tensor,
 
             # Perform the upsampling
             last_layer_upsampled_by_factor_2_logits = tf.nn.conv2d_transpose(last_layer_logits,
-                                                                     upsample_filter_factor_2_tensor,
+                                                                             upsample_filter_factor_2_tensor,
                                                                      output_shape=last_layer_upsampled_by_factor_2_logits_shape,
                                                                      strides=[1, 2, 2, 1])
 
