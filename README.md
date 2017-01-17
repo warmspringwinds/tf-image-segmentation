@@ -37,6 +37,6 @@ This code has been used to train networks with this performance:
 
 ## About
 
-This code was developed by
+The framework was developed by
 
 * Daniil Pakhomov
