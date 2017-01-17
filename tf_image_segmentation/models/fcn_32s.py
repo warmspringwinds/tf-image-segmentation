@@ -1,5 +1,5 @@
-import tensorflow as tf
 from nets import vgg
+import tensorflow as tf
 from preprocessing import vgg_preprocessing
 from ..utils.upsampling import bilinear_upsample_weights
 
