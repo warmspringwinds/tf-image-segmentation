@@ -25,6 +25,8 @@ the PASCAL VOC 2012 Training data and additional Berkeley segmentation data for 
 It was important to test models on restricted Validation dataset to make sure no images in the
 validation dataset were seen by model during training.
 
+The code to acquire the training and validating the model is also provided in the framework.
+
 This code has been used to train networks with this performance:
 
 | Model     | Test data |Mean IOU | Mean pix. accuracy | Pixel accuracy | Model Download Link |
