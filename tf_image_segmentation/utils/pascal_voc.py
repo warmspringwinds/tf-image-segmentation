@@ -1,5 +1,3 @@
-# TODO: important! -- combine berkeley and pascal voc (union)
-
 import skimage.io as io
 import numpy as np
 import os
