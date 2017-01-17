@@ -1,4 +1,4 @@
-# TF Image Segmentation: CNN-based Image Segmentation framework
+# TF Image Segmentation: Image Segmentation framework
 
 The aim of the ```TF Image Segmentation``` framework is to provide/provide a simplified way for:
 
