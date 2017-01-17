@@ -5,8 +5,7 @@ from ..utils.upsampling import bilinear_upsample_weights
 
 slim = tf.contrib.slim
 
-# Load the mean pixel values and the function
-# that performs the subtraction from each pixel
+# Mean values for VGG-16
 from preprocessing.vgg_preprocessing import _R_MEAN, _G_MEAN, _B_MEAN
 
 
