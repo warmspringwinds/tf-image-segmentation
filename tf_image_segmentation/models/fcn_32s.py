@@ -6,7 +6,6 @@ from preprocessing import vgg_preprocessing
 slim = tf.contrib.slim
 
 # Mean values for VGG-16
-# TODO: maybe copy it here instead of importing
 from preprocessing.vgg_preprocessing import _R_MEAN, _G_MEAN, _B_MEAN
 
 
