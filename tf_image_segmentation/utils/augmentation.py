@@ -1,15 +1,8 @@
-from tensorflow.python.ops import control_flow_ops
 import tensorflow as tf
-import sys
-
-# Using custom slim repository
-# TODO: make a sys.path.append visible for the whole repository
-
-sys.path.append("/home/dpakhom1/workspace/my_models/slim/")
-slim = tf.contrib.slim
-
+from tensorflow.python.ops import control_flow_ops
 from preprocessing.inception_preprocessing import distort_color, apply_with_random_selector
 
+slim = tf.contrib.slim
 
 def flip_randomly_left_right_image_with_annotation(image_tensor, annotation_tensor):
     """Accepts image tensor and annotation tensor and returns randomly flipped tensors of both.
