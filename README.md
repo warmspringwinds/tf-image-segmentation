@@ -1,6 +1,6 @@
 # TF Image Segmentation: CNN-based Image Segmentation framework implemented in  Tensorflow and TF-Slim library
 
-The aim of the ```TF Image Segmentation``` framework is to provide a simplified way for:
+The aim of the ```TF Image Segmentation``` framework is to provide/provide a simplified way for:
 
 - Converting some popular general/medical/other Image Segmentation Datasets into easy-to-use for training ```.tfrecords```
 format with unified interface: different datasets but same way to store images and annotations.
@@ -20,9 +20,12 @@ The end goal is to provide utilities to convert other datasets, report accuracie
 
 ## PASCAL VOC 2012
 
-While we are still tuning parameters, on the PASCAL VOC 2011
-validation data subset used in the FCN paper, this code has been used
-to train networks with this performance:
+Implemented models were tested on Restricted PASCAL VOC 2012 Validation dataset and trained on
+the PASCAL VOC 2012 Training data and additional Berkeley segmentation data for PASCAL VOC 12.
+It was important to test models on restricted Validation dataset to make sure no images in the
+validation dataset were seen by model during training.
+
+This code has been used to train networks with this performance:
 
 | Model     | Test data |Mean IOU | Mean pix. accuracy | Pixel accuracy | Model Download Link |
 |-----------|-----------|---------|--------------------|----------------|---------------------|
