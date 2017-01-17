@@ -1,7 +1,7 @@
 import tensorflow as tf
-from ..utils.upsampling import bilinear_upsample_weights
 from nets import vgg
 from preprocessing import vgg_preprocessing
+from ..utils.upsampling import bilinear_upsample_weights
 
 slim = tf.contrib.slim
 
