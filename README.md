@@ -20,7 +20,7 @@ The end goal is to provide utilities to convert other datasets, report accuracie
 
 ## PASCAL VOC 2012
 
-Implemented models were tested on Restricted PASCAL VOC 2012 Validation dataset and trained on
+Implemented models were tested on Restricted PASCAL VOC 2012 Validation dataset (RV-VOC12) and trained on
 the PASCAL VOC 2012 Training data and additional Berkeley segmentation data for PASCAL VOC 12.
 It was important to test models on restricted Validation dataset to make sure no images in the
 validation dataset were seen by model during training.
