@@ -27,6 +27,12 @@ validation dataset were seen by model during training.
 
 The code to acquire the training and validating the model is also provided in the framework.
 
+### Fully Convolutional Networks for Semantic Segmentation
+
+Here you can find models that were described in the paper "Fully Convolutional Networks for Semantic Segmentation"
+by Long et al. We trained and tested ```FCN-32s```, ```FCN-16``` and ```FCN-8s``` against PASCAL VOC 2012
+dataset.
+
 This code has been used to train networks with this performance:
 
 | Model            | Test data |Mean IOU | Mean pix. accuracy | Pixel accuracy | Model Download Link |
@@ -34,9 +40,9 @@ This code has been used to train networks with this performance:
 | FCN-32s (ours)   | RV-VOC12  | 62.70   | in prog.           | in prog.       | in prog.            |
 | FCN-16s (ours)   | RV-VOC12  | 63.52   | in prog.           | in prog.       | in prog.            |
 | FCN-8s (ours)    | RV-VOC12  | in prog.| in prog.           | in prog.       | in prog.            |
-| FNC-32s (orig.)  | RV-VOC11  | 59.40   | 73.30              | 89.10          |                     |
-| FNC-16s (orig.)  | RV-VOC11  | 62.40   | 75.70              | 90.00          |                     |
-| FNC-8s  (orig.)  | RV-VOC11  | 62.70   | 75.90              | 90.30          |                     |
+| FCN-32s (orig.)  | RV-VOC11  | 59.40   | 73.30              | 89.10          |                     |
+| FCN-16s (orig.)  | RV-VOC11  | 62.40   | 75.70              | 90.00          |                     |
+| FCN-8s  (orig.)  | RV-VOC11  | 62.70   | 75.90              | 90.30          |                     |
 
 
 
