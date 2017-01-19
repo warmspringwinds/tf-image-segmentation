@@ -33,7 +33,7 @@ Here you can find models that were described in the paper "Fully Convolutional N
 by Long et al. We trained and tested ```FCN-32s```, ```FCN-16s``` and ```FCN-8s``` against PASCAL VOC 2012
 dataset.
 
-You can find all the scripts that were used for training and evaluation here [here](tf_image_segmentation/recipes/pascal_voc/FCNs).
+You can find all the scripts that were used for training and evaluation [here](tf_image_segmentation/recipes/pascal_voc/FCNs).
 
 This code has been used to train networks with this performance:
 
