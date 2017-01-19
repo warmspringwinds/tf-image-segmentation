@@ -13,6 +13,40 @@ from preprocessing.vgg_preprocessing import _R_MEAN, _G_MEAN, _B_MEAN
 def FCN_16s(image_batch_tensor,
             number_of_classes,
             is_training):
+    """Returns the FCN-16s model definition.
+    The function returns the model definition of a network that was described
+    in 'Fully Convolutional Networks for Semantic Segmentation' by Long et al.
+    The network subsamples the input by a factor of 32 and uses two bilinear
+    upsampling layers to upsample prediction by a factor of 32. This means that
+    if the image size is not of the factor 32, the prediction of different size
+    will be delivered. To adapt the network for an any size input use 
+    adapt_network_for_any_size_input(FCN_16s, 32). Note: the upsampling kernel
+    is fixed in this model definition, because it didn't give significant
+    improvements according to aforementioned paper.
+    
+    Parameters
+    ----------
+    image_batch_tensor : [batch_size, height, width, depth] Tensor
+        Tensor specifying input image batch
+    number_of_classes : int
+        An argument specifying the number of classes to be predicted.
+        For example, for PASCAL VOC it is 21.
+    is_training : boolean
+        An argument specifying if the network is being evaluated or trained.
+        It affects the work of underlying dropout layer of VGG-16.
+    
+    Returns
+    -------
+    upsampled_logits : [batch_size, height, width, number_of_classes] Tensor
+        Tensor with logits representing predictions for each class.
+        Be careful, the output can be of different size compared to input,
+        use adapt_network_for_any_size_input to adapt network for any input size.
+        Otherwise, the input images sizes should be of multiple 32.
+    fcn_32s_variables_mapping : dict {string: variable}
+        Dict which maps the FCN-16s model's variables to FCN-32s checkpoint variables
+        names. We need this to initilize the weights of FCN-16s model with FCN-32s from
+        checkpoint file. Look at ipython notebook for examples.
+    """
 
     # Convert image to float32 before subtracting the
     # mean pixel value
