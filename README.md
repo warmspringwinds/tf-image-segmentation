@@ -29,11 +29,14 @@ The code to acquire the training and validating the model is also provided in th
 
 This code has been used to train networks with this performance:
 
-| Model     | Test data |Mean IOU | Mean pix. accuracy | Pixel accuracy | Model Download Link |
-|-----------|-----------|---------|--------------------|----------------|---------------------|
-| FCN-32s   | RV-VOC12  | 62.70   | in prog.           | in prog.       | in prog.            |
-| FCN-16s   | RV-VOC12  | in prog.| in prog.           | in prog.       | in prog.            |
-| FCN-8s    | RV-VOC12  | in prog.| in prog.           | in prog.       | in prog.            |
+| Model            | Test data |Mean IOU | Mean pix. accuracy | Pixel accuracy | Model Download Link |
+|------------------|-----------|---------|--------------------|----------------|---------------------|
+| FCN-32s (ours)   | RV-VOC12  | 62.70   | in prog.           | in prog.       | in prog.            |
+| FCN-16s (ours)   | RV-VOC12  | 63.52   | in prog.           | in prog.       | in prog.            |
+| FCN-8s (ours)    | RV-VOC12  | in prog.| in prog.           | in prog.       | in prog.            |
+| FNC-32s (orig.)  | RV-VOC11  | 59.40   | 73.30              | 89.10          |                     |
+| FNC-16s (orig.)  | RV-VOC11  | 62.40   | 75.70              | 90.00          |                     |
+| FNC-8s  (orig.)  | RV-VOC11  | 62.70   | 75.90              | 90.30          |                     |
 
 
 
