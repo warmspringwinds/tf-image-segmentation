@@ -27,7 +27,7 @@ validation dataset were seen by model during training.
 
 The code to acquire the training and validating the model is also provided in the framework.
 
-### Fully Convolutional Networks for Semantic Segmentation
+### Fully Convolutional Networks for Semantic Segmentation (FCNs)
 
 Here you can find models that were described in the paper "Fully Convolutional Networks for Semantic Segmentation"
 by Long et al. We trained and tested ```FCN-32s```, ```FCN-16``` and ```FCN-8s``` against PASCAL VOC 2012
