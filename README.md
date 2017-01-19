@@ -30,8 +30,10 @@ The code to acquire the training and validating the model is also provided in th
 ### Fully Convolutional Networks for Semantic Segmentation (FCNs)
 
 Here you can find models that were described in the paper "Fully Convolutional Networks for Semantic Segmentation"
-by Long et al. We trained and tested ```FCN-32s```, ```FCN-16``` and ```FCN-8s``` against PASCAL VOC 2012
+by Long et al. We trained and tested ```FCN-32s```, ```FCN-16s``` and ```FCN-8s``` against PASCAL VOC 2012
 dataset.
+
+You can find all the scripts that were used for training and evaluation here [here](recipes/pascal_voc/FCNs).
 
 This code has been used to train networks with this performance:
 
