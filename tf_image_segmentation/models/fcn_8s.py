@@ -119,7 +119,7 @@ def FCN_8s(image_batch_tensor,
             
 
             # Calculate the ouput size of the upsampled tensor
-            fused_last_layer_and_pool4_upsampled_by_factor_16_logits_shape = tf.pack([
+            fused_last_layer_and_pool4_upsampled_by_factor_2_logits_shape = tf.pack([
                                                                           fused_last_layer_and_pool4_logits_shape[0],
                                                                           fused_last_layer_and_pool4_logits_shape[1] * 2,
                                                                           fused_last_layer_and_pool4_logits_shape[2] * 2,
@@ -129,7 +129,7 @@ def FCN_8s(image_batch_tensor,
             # Perform the upsampling
             fused_last_layer_and_pool4_upsampled_by_factor_2_logits = tf.nn.conv2d_transpose(fused_last_layer_and_pool4_logits,
                                                                         upsample_filter_factor_2_tensor,
-                                                                        output_shape=fused_last_layer_and_pool4_upsampled_by_factor_16_logits_shape,
+                                                                        output_shape=fused_last_layer_and_pool4_upsampled_by_factor_2_logits_shape,
                                                                         strides=[1, 2, 2, 1])
             
             
