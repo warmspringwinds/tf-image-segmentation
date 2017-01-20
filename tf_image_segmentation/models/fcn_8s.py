@@ -97,8 +97,10 @@ def FCN_8s(image_batch_tensor,
                                                                              strides=[1, 2, 2, 1])
 
             ## Adding the skip here for FCN-16s model
-
-            pool4_features = end_points['fcn_16s/vgg_16/pool4']
+            
+            # We created vgg in the fcn_8s name scope -- so
+            # all the vgg endpoints now are prepended with fcn_8s name
+            pool4_features = end_points['fcn_8s/vgg_16/pool4']
 
             # We zero initialize the weights to start training with the same
             # accuracy that we ended training FCN-32s
@@ -135,7 +137,7 @@ def FCN_8s(image_batch_tensor,
             
             ## Adding the skip here for FCN-8s model
 
-            pool3_features = end_points['fcn_16s/vgg_16/pool3']
+            pool3_features = end_points['fcn_8s/vgg_16/pool3']
             
             # We zero initialize the weights to start training with the same
             # accuracy that we ended training FCN-32s
