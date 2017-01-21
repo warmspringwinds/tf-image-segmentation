@@ -41,7 +41,7 @@ This code has been used to train networks with this performance:
 |------------------|-----------|---------|--------------------|----------------|---------------------|
 | FCN-32s (ours)   | RV-VOC12  | 62.70   | in prog.           | in prog.       | in prog.            |
 | FCN-16s (ours)   | RV-VOC12  | 63.52   | in prog.           | in prog.       | in prog.            |
-| FCN-8s (ours)    | RV-VOC12  | in prog.| in prog.           | in prog.       | in prog.            |
+| FCN-8s (ours)    | RV-VOC12  | 63.65   | in prog.           | in prog.       | in prog.            |
 | FCN-32s (orig.)  | RV-VOC11  | 59.40   | 73.30              | 89.10          |                     |
 | FCN-16s (orig.)  | RV-VOC11  | 62.40   | 75.70              | 90.00          |                     |
 | FCN-8s  (orig.)  | RV-VOC11  | 62.70   | 75.90              | 90.30          |                     |
