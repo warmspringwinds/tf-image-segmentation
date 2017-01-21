@@ -16,11 +16,11 @@ def FCN_8s(image_batch_tensor,
     """Returns the FCN-8s model definition.
     The function returns the model definition of a network that was described
     in 'Fully Convolutional Networks for Semantic Segmentation' by Long et al.
-    The network subsamples the input by a factor of 32 and uses two bilinear
+    The network subsamples the input by a factor of 32 and uses three bilinear
     upsampling layers to upsample prediction by a factor of 32. This means that
     if the image size is not of the factor 32, the prediction of different size
     will be delivered. To adapt the network for an any size input use 
-    adapt_network_for_any_size_input(FCN_16s, 32). Note: the upsampling kernel
+    adapt_network_for_any_size_input(FCN_8s, 32). Note: the upsampling kernel
     is fixed in this model definition, because it didn't give significant
     improvements according to aforementioned paper.
     
@@ -43,8 +43,8 @@ def FCN_8s(image_batch_tensor,
         use adapt_network_for_any_size_input to adapt network for any input size.
         Otherwise, the input images sizes should be of multiple 32.
     fcn_16s_variables_mapping : dict {string: variable}
-        Dict which maps the FCN-16s model's variables to FCN-32s checkpoint variables
-        names. We need this to initilize the weights of FCN-16s model with FCN-32s from
+        Dict which maps the FCN-8s model's variables to FCN-16s checkpoint variables
+        names. We need this to initilize the weights of FCN-8s model with FCN-16s from
         checkpoint file. Look at ipython notebook for examples.
     """
 
