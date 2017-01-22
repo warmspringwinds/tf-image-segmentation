@@ -39,9 +39,9 @@ This code has been used to train networks with this performance:
 
 | Model            | Test data |Mean IOU | Mean pix. accuracy | Pixel accuracy | Model Download Link |
 |------------------|-----------|---------|--------------------|----------------|---------------------|
-| FCN-32s (ours)   | RV-VOC12  | 62.70   | in prog.           | in prog.       | [dropbox](https://www.dropbox.com/s/7r6lnilgt78ljia/fcn_8s.tar.gz?dl=0)            |
-| FCN-16s (ours)   | RV-VOC12  | 63.52   | in prog.           | in prog.       | [dropbox](https://www.dropbox.com/s/7r6lnilgt78ljia/fcn_8s.tar.gz?dl=0)            |
-| FCN-8s (ours)    | RV-VOC12  | 63.65   | in prog.           | in prog.       | [dropbox](https://www.dropbox.com/s/7r6lnilgt78ljia/fcn_8s.tar.gz?dl=0)            |
+| FCN-32s (ours)   | RV-VOC12  | 62.70   | in prog.           | in prog.       | [Dropbox](https://www.dropbox.com/s/66coqapbva7jpnt/fcn_32s.tar.gz?dl=0)            |
+| FCN-16s (ours)   | RV-VOC12  | 63.52   | in prog.           | in prog.       | [Dropbox](https://www.dropbox.com/s/tmhblqcwqvt2zjo/fcn_16s.tar.gz?dl=0)            |
+| FCN-8s (ours)    | RV-VOC12  | 63.65   | in prog.           | in prog.       | [Dropbox](https://www.dropbox.com/s/7r6lnilgt78ljia/fcn_8s.tar.gz?dl=0)            |
 | FCN-32s (orig.)  | RV-VOC11  | 59.40   | 73.30              | 89.10          |                     |
 | FCN-16s (orig.)  | RV-VOC11  | 62.40   | 75.70              | 90.00          |                     |
 | FCN-8s  (orig.)  | RV-VOC11  | 62.70   | 75.90              | 90.30          |                     |
