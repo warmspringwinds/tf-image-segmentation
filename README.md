@@ -14,7 +14,9 @@ VGG that are officially provided by TF-Slim library.
 
 So far, the framework contains an implementation of the FCN models (training
 and evaluation) in Tensorflow and TF-Slim library with training routine, reported accuracy,
-trained models for PASCAL VOC 2012 dataset.
+trained models for PASCAL VOC 2012 dataset. To train these models on your data, [convert your dataset
+to tfrecords](tf_image_segmentation/recipes/pascal_voc/convert_pascal_voc_to_tfrecords.ipynb) and follow the
+instructions below.
 
 The end goal is to provide utilities to convert other datasets, report accuracies on them and provide models.
 
