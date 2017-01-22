@@ -38,6 +38,7 @@ This code requires:
  sys.path.append('/home/dpakhom1/workspace/models/slim/')
  ```
 3. Some libraries which can be acquired by installing [Anaconda package](https://www.continuum.io/downloads).
+ 
  Or you can install ```scikit-image```, ```matplotlib```, ```numpy``` using ```pip```.
 
 
