@@ -40,6 +40,8 @@ This code requires:
 3. Some libraries which can be acquired by installing [Anaconda package](https://www.continuum.io/downloads).
  
  Or you can install ```scikit-image```, ```matplotlib```, ```numpy``` using ```pip```.
+ 
+4. ```VGG 16``` checkpoint file, which you can get from [here](http://download.tensorflow.org/models/vgg_16_2016_08_28.tar.gz)
 
 
 
