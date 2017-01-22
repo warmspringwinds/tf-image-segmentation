@@ -25,6 +25,7 @@ This code requires:
 1. Tensorflow ```r0.12``` or later version.
 
 2. Custom [tensorflow/models](https://github.com/tensorflow/models) repository, which might be [merged](https://github.com/tensorflow/models/pull/684) in a future.
+
  Simply run:
  ```git clone -b fully_conv_vgg https://github.com/warmspringwinds/models```
  
