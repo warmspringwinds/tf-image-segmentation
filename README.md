@@ -27,6 +27,7 @@ This code requires:
 2. Custom [tensorflow/models](https://github.com/tensorflow/models) repository, which might be [merged](https://github.com/tensorflow/models/pull/684) in a future.
 
  Simply run:
+ 
  ```git clone -b fully_conv_vgg https://github.com/warmspringwinds/models```
  
  And add ```models/slim``` subdirectory to your path:
