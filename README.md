@@ -18,6 +18,17 @@ trained models for PASCAL VOC 2012 dataset.
 
 The end goal is to provide utilities to convert other datasets, report accuracies on them and provide models.
 
+## Installation
+
+This code requires Tensorflow ```r0.12``` or later version.
+
+You will also have to get a custom ```tensorflow/models``` repository, which might be [merged](https://github.com/tensorflow/models/pull/684) in a future:
+```git clone -b fully_conv_vgg https://github.com/warmspringwinds/models```
+And add it to your path:
+```sys.path.append("/home/dpakhom1/workspace/my_models/slim/")```
+
+
+
 ## PASCAL VOC 2012
 
 Implemented models were tested on Restricted PASCAL VOC 2012 Validation dataset (RV-VOC12) and trained on
