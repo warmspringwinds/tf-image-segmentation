@@ -20,9 +20,11 @@ The end goal is to provide utilities to convert other datasets, report accuracie
 
 ## Installation
 
-This code requires Tensorflow ```r0.12``` or later version.
+This code requires:
 
-You will also have to get a custom ```tensorflow/models``` repository, which might be [merged](https://github.com/tensorflow/models/pull/684) in a future:
+1. Tensorflow ```r0.12``` or later version.
+
+2. Custom ```tensorflow/models``` repository, which might be [merged](https://github.com/tensorflow/models/pull/684) in a future:
 
 ```git clone -b fully_conv_vgg https://github.com/warmspringwinds/models```
 And add it to your path:
