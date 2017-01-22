@@ -26,13 +26,13 @@ This code requires:
 
 2. Custom ```tensorflow/models``` repository, which might be [merged](https://github.com/tensorflow/models/pull/684) in a future:
 
-```git clone -b fully_conv_vgg https://github.com/warmspringwinds/models```
-And add it to your path:
+ ```git clone -b fully_conv_vgg https://github.com/warmspringwinds/models```
+ And add it to your path:
 
-```python
-import sys
-sys.path.append('/home/dpakhom1/workspace/models/slim/')
-```
+ ```python
+ import sys
+ sys.path.append('/home/dpakhom1/workspace/models/slim/')
+ ```
 
 
 
