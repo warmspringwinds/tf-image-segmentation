@@ -43,6 +43,17 @@ This code requires:
  
 4. ```VGG 16``` checkpoint file, which you can get from [here](http://download.tensorflow.org/models/vgg_16_2016_08_28.tar.gz).
 
+5. Clone this library:
+
+ ```git clone https://github.com/warmspringwinds/tf-image-segmentation```
+ 
+ And add it to the path:
+ 
+ ```python
+ import sys
+ # update with your path
+ sys.path.append("/home/dpakhom1/tf_projects/segmentation/tf-image-segmentation/")
+ ```
 
 
 ## PASCAL VOC 2012
