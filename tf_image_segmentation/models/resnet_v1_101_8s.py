@@ -10,9 +10,9 @@ from preprocessing.vgg_preprocessing import _R_MEAN, _G_MEAN, _B_MEAN
 
 
 def extract_resnet_v1_101_mapping_without_logits(resnet_v1_101_variables_mapping):
-    """Removes the fc8 variable mapping from FCN-32s to VGG-16 model mapping dict.
-    Given the FCN-32s to VGG-16 model mapping dict which is returned by FCN_32s()
-    function, remove the mapping for the fc8 variable. This is done because this
+    """Removes the logits variable mapping from resnet_v1_101_8s to resnet_v1_101 model mapping dict.
+    Given the resnet_v1_101_8s to resnet_v1_101 model mapping dict which is returned by
+    resnet_v1_101_8s() function, remove the mapping for the fc8 variable. This is done because this
     variable is responsible for final class prediction and is different for different
     tasks. Last layer usually has different size, depending on the number of classes
     to be predicted. This is why we omit it from the dict and those variables will
@@ -21,14 +21,14 @@ def extract_resnet_v1_101_mapping_without_logits(resnet_v1_101_variables_mapping
     Parameters
     ----------
     resnet_v1_101_variables_mapping : dict {string: variable}
-        Dict which maps the FCN-32s model's variables to VGG-16 checkpoint variables
-        names. Look at FCN-32s() function for more details.
+        Dict which maps the resnet_v1_101_8s model's variables to resnet_v1_101 checkpoint variables
+        names. Look at resnet_v1_101_8s() function for more details.
     
     Returns
     -------
     updated_mapping : dict {string: variable}
-        Dict which maps the FCN-32s model's variables to VGG-16 checkpoint variables
-        names without fc8 layer mapping.
+        Dict which maps the resnet_v1_101_8s model's variables to resnet_v1_101 checkpoint variables
+        names without logits layer mapping.
     """
     
     # TODO: review this part one more time
@@ -50,14 +50,15 @@ def extract_resnet_v1_101_mapping_without_logits(resnet_v1_101_variables_mapping
 def resnet_v1_101_8s(image_batch_tensor,
                      number_of_classes,
                      is_training):
-    """Returns the FCN-32s model definition.
+    """Returns the resnet_v1_101_8s model definition.
     The function returns the model definition of a network that was described
-    in 'Fully Convolutional Networks for Semantic Segmentation' by Long et al.
-    The network subsamples the input by a factor of 32 and uses the bilinear
-    upsampling kernel to upsample prediction by a factor of 32. This means that
-    if the image size is not of the factor 32, the prediction of different size
+    in 'DeepLab: Semantic Image Segmentation with Deep Convolutional Nets,
+    Atrous Convolution, and Fully Connected CRFs' by Chen et al.
+    The network subsamples the input by a factor of 8 and uses the bilinear
+    upsampling kernel to upsample prediction by a factor of 8. This means that
+    if the image size is not of the factor 8, the prediction of different size
     will be delivered. To adapt the network for an any size input use 
-    adapt_network_for_any_size_input(FCN_32s, 32). Note: the upsampling kernel
+    adapt_network_for_any_size_input(resnet_v1_101_8s, 8). Note: the upsampling kernel
     is fixed in this model definition, because it didn't give significant
     improvements according to aforementioned paper.
     
@@ -70,7 +71,6 @@ def resnet_v1_101_8s(image_batch_tensor,
         For example, for PASCAL VOC it is 21.
     is_training : boolean
         An argument specifying if the network is being evaluated or trained.
-        It affects the work of underlying dropout layer of VGG-16.
     
     Returns
     -------
@@ -78,10 +78,10 @@ def resnet_v1_101_8s(image_batch_tensor,
         Tensor with logits representing predictions for each class.
         Be careful, the output can be of different size compared to input,
         use adapt_network_for_any_size_input to adapt network for any input size.
-        Otherwise, the input images sizes should be of multiple 32.
-    vgg_16_variables_mapping : dict {string: variable}
-        Dict which maps the FCN-32s model's variables to VGG-16 checkpoint variables
-        names. We need this to initilize the weights of FCN-32s model with VGG-16 from
+        Otherwise, the input images sizes should be of multiple 8.
+    resnet_v1_101_8s_variables_mapping : dict {string: variable}
+        Dict which maps the resnet_v1_101_8s model's variables to resnet_v1_101 checkpoint variables
+        names. We need this to initilize the weights of resnet_v1_101_8s model with resnet_v1_101 from
         checkpoint file. Look at ipython notebook for examples.
     """
     
