@@ -36,6 +36,8 @@ def write_image_annotation_pairs_to_tfrecord(filename_pairs, tfrecords_filename)
 
         img = np.array(Image.open(img_path))
         annotation = np.array(Image.open(annotation_path))
+        # Unomment this one when working with surgical data
+        # annotation = annotation[:, :, 0]
 
         # The reason to store image sizes was demonstrated
         # in the previous example -- we have to know sizes
