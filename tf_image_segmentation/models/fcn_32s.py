@@ -140,7 +140,11 @@ def FCN_32s(image_batch_tensor,
 
             # Here we remove the part of a name of the variable
             # that is responsible for the current variable scope
-            original_vgg_16_checkpoint_string = variable.name[len(fcn_32s_scope.original_name_scope):-2]
+            # original_vgg_16_checkpoint_string = variable.name[len(fcn_32s_scope.original_name_scope):-2]
+            
+            # Updated: changed .name_scope to .name because name_scope only affects operations
+            # and variable scope is actually represented by .name
+            original_vgg_16_checkpoint_string = variable.name[len(fcn_32s_scope.name)+1:-2]
             vgg_16_variables_mapping[original_vgg_16_checkpoint_string] = variable
 
     return upsampled_logits, vgg_16_variables_mapping
