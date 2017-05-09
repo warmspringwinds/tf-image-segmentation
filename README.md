@@ -90,9 +90,14 @@ This code has been used to train networks with this performance:
 
 ## About
 
-The framework was developed by:
+If you used the code for your research, please, cite the paper:
 
-* Daniil Pakhomov
+    @article{pakhomov2017deep,
+      title={Deep Residual Learning for Instrument Segmentation in Robotic Surgery},
+      author={Pakhomov, Daniil and Premachandran, Vittal and Allan, Max and Azizian, Mahdi and Navab, Nassir},
+      journal={arXiv preprint arXiv:1703.08580},
+      year={2017}
+    }
 
 During implementation, some preliminary experiments and notes were reported:
 - [Converting Image Classification network into FCN](http://warmspringwinds.github.io/tensorflow/tf-slim/2016/10/30/image-classification-and-segmentation-using-tensorflow-and-tf-slim/)
